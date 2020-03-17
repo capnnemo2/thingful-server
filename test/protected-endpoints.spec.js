@@ -44,7 +44,7 @@ describe("Protected endpoints", function() {
   ];
 
   protectedEndpoints.forEach(endpoint => {
-    describe(endpoint.name, () => {
+    describe.only(endpoint.name, () => {
       it(`responds 401 'Missing basic token' when no basic token`, () => {
         return endpoint
           .method(endpoint.path)
