@@ -5,7 +5,7 @@ const helpers = require("./test-helpers");
 describe("Protected endpoints", function() {
   let db;
 
-  const { testUsers, testThings, testReviews } = helpers.makeThingsFixtures;
+  const { testUsers, testThings, testReviews } = helpers.makeThingsFixtures();
 
   before("make knex instance", () => {
     db = knex({
@@ -21,9 +21,9 @@ describe("Protected endpoints", function() {
 
   afterEach("cleanup", () => helpers.cleanTables(db));
 
-  beforeEach("insert things", () =>
-    helpers.seedThingsTables(db, testUsers, testThings, testReviews)
-  );
+  beforeEach("insert things", () => {
+    helpers.seedThingsTables(db, testUsers, testThings, testReviews);
+  });
 
   const protectedEndpoints = [
     {
@@ -44,7 +44,7 @@ describe("Protected endpoints", function() {
   ];
 
   protectedEndpoints.forEach(endpoint => {
-    describe.only(endpoint.name, () => {
+    describe(endpoint.name, () => {
       it(`responds 401 'Missing basic token' when no basic token`, () => {
         return endpoint
           .method(endpoint.path)

@@ -226,8 +226,8 @@ function cleanTables(db) {
   return db.raw(
     `TRUNCATE
       thingful_things,
-      thingful_users,
-      thingful_reviews
+      thingful_reviews,
+      thingful_users
       RESTART IDENTITY CASCADE`
   );
 }
@@ -238,7 +238,7 @@ function seedUsers(db, users) {
     password: bcrypt.hashSync(user.password, 1)
   }));
   return db
-    .into("blogful_users")
+    .into("thingful_users")
     .insert(preppedUsers)
     .then(() =>
       db.raw(`SELECT setval('thingful_users_id_seq', ?)`, [
@@ -248,7 +248,7 @@ function seedUsers(db, users) {
 }
 
 function seedThingsTables(db, users, things, reviews = []) {
-  return seedUsers(db, [user])
+  return seedUsers(db, users)
     .then(() => db.into("thingful_things").insert(things))
     .then(() => reviews.length && db.into("thingful_reviews").insert(reviews));
 }
